@@ -1,0 +1,29 @@
+.input-button {
+    vertical-align: middle;
+}
+
+.map-container {
+    height: calc(100vh - 54px); /* 54px = height of topbar sticker */
+    max-width: 900px;
+    max-height: 900px;
+}
+
+.sidebar-container {
+    height: calc(100vh - 54px); /* 54px = height of topbar sticker */
+    max-width: 900px;
+    width: 400px;
+    float: left;
+}
+  
+.sidebar {
+    background-color: #BCCBD7;
+    color: #0E2127;
+    padding: 10px 20px;
+    font-family: monospace;
+    z-index: 1;
+    position: static;
+    top: 0;
+    left: 0;
+    margin: 12px;
+    border-radius: 4px;
+}
