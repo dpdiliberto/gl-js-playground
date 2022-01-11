@@ -8,11 +8,12 @@ import * as turf from '@turf/turf';
 
 export default function Parameters(props) {
 
-    const {lngContext, latContext, zoomContext, styleContext, tileToggleContext} = useContext(Context.Context);
+    const {lngContext, latContext, zoomContext, styleContext, accessTokenContext, tileToggleContext} = useContext(Context.Context);
     const {lng, setLng} = lngContext;
     const {lat, setLat} = latContext;
     const {zoom, setZoom} = zoomContext;
     const {style, setStyle} = styleContext;
+    const {accessToken, setAccessToken} = accessTokenContext;
     const {toggleValue, setToggleValue} = tileToggleContext;
     const [slippyTile, setSlippyTile] = useState('');
 
@@ -42,6 +43,9 @@ export default function Parameters(props) {
         }
         if (id === 'map-style') {
             setStyle(value);
+        }
+        if (id === 'access-token') {
+            setAccessToken(value);
         }
     }
 
@@ -90,7 +94,7 @@ export default function Parameters(props) {
                         <div className="pr12">
                             <ControlText className='input--border-black w240 txt-ms'
                                 id="slippy-tile"
-                                label="Input slippy tile numbers"
+                                label="Input slippy tile coordinates"
                                 type="string"
                                 placeholder="z/x/y tile"
                                 value={slippyTile}
@@ -98,7 +102,7 @@ export default function Parameters(props) {
                             />
                         </div>
                         <div className="py30">
-                            <button className='btn btn--s' onClick={handleClickSlippyTiles}>Find Tile</button>
+                            <button className='btn btn--s' onClick={handleClickSlippyTiles}>Locate</button>
                         </div>
                     </div> 
                 </div>
@@ -140,21 +144,30 @@ export default function Parameters(props) {
             </div>
             <div className="txt-bold txt-s align-center">Map Style
                 <div className="sidebar align-l"> 
-                    <div className="inline-flex">
+                    <div>
                         <div className="pr12">
-                        <ControlText className='input--border-black w240 txt-ms'
-                                id="map-style"
-                                label="Input style ID"
-                                type="string"
-                                value={style}
-                                onChange={handleChangeMapParameters}
-                                placeholder='username/styleID'
-                            />
-                        </div>
-                        <div className="py30">
-                            <button className='btn btn--s' onClick={handleClickMapStyle}>
-                                Update
-                            </button>
+                            <ControlText className='input--border-black w240 txt-ms'
+                                    id="access-token"
+                                    label="Input access token"
+                                    type="string"
+                                    value={accessToken}
+                                    onChange={handleChangeMapParameters}
+                                />
+                            <div className='flex'>
+                                <ControlText className='input--border-black w240 txt-ms form-control'
+                                        id="map-style"
+                                        label="Input style ID"
+                                        type="string"
+                                        value={style}
+                                        onChange={handleChangeMapParameters}
+                                        placeholder='username/styleID'
+                                    />
+                                    <div className='pl12 py24'>
+                                        <button className='btn btn--s' onClick={handleClickMapStyle}>
+                                            Update
+                                        </button>
+                                    </div>
+                            </div>
                         </div>
                     </div>
                 </div>

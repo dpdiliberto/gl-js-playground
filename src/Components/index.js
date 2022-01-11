@@ -4,18 +4,19 @@ import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-load
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import Tabs from './Tabs.js';
 import Context from '../Context';
- 
-mapboxgl.accessToken = 'pk.eyJ1IjoiZHBkaWxpYmVydG8iLCJhIjoiY2t5MG51MzFxMDJ5dTJ6cGVzMHd0dHJ0biJ9.LPQOq0sm0fKXb07DGKTFDA';
 
 export default function App() {
     const mapContainer = useRef(null);
     const map = useRef(null);
-    const {lngContext, latContext, zoomContext, styleContext} = useContext(Context.Context);
+    const {lngContext, latContext, zoomContext, styleContext, accessTokenContext} = useContext(Context.Context);
     const {lng, setLng} = lngContext;
     const {lat, setLat} = latContext;
     const {zoom, setZoom} = zoomContext;
+    const {accessToken} = accessTokenContext;
     const {style} = styleContext;
-      
+    
+    mapboxgl.accessToken = accessToken;
+
     // initialize map only once
     useEffect(() => {
         if (map.current) return; 

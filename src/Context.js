@@ -7,6 +7,7 @@ export const Provider = ({ children }) => {
     const [lng, setLng] = useState(-122.3978);
     const [lat, setLat] = useState(37.7533);
     const [zoom, setZoom] = useState(9);
+    const [accessToken, setAccessToken] = useState('pk.eyJ1IjoiZHBkaWxpYmVydG8iLCJhIjoiY2t5MG51MzFxMDJ5dTJ6cGVzMHd0dHJ0biJ9.LPQOq0sm0fKXb07DGKTFDA');
     const [style, setStyle] = useState('mapbox/streets-v11');
     const [toggleValue, setToggleValue] = useState(false);
 
@@ -44,6 +45,7 @@ export const Provider = ({ children }) => {
         lngContext: {lng, setLng},
         latContext: {lat, setLat},
         zoomContext: {zoom, setZoom},
+        accessTokenContext: {accessToken, setAccessToken},
         styleContext: {style, setStyle},
         tileToggleContext: {toggleValue, setToggleValue},
         styleParamsByInputContext: {styleParamsByInput, setStyleParamsByInput},

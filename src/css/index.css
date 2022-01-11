@@ -5,12 +5,12 @@
 .map-container {
     height: calc(100vh - 54px); /* 54px = height of topbar sticker */
     max-width: 800px;
-    max-height: 600px;
+    max-height: 620px;
 }
 
 .sidebar-container {
     height: calc(100vh - 54px); /* 54px = height of topbar sticker */
-    max-height: 600px;
+    max-height: 620px;
     width: 400px;
     float: left;
 }
@@ -24,6 +24,6 @@
     position: static;
     top: 0;
     left: 0;
-    margin: 12px;
+    margin: 10px;
     border-radius: 4px;
 }
