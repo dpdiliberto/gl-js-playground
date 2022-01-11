@@ -30,16 +30,23 @@ export default function Snippet() {
     const {zoom} = zoomContext;
     const {dataNotAdded} = dataNotAddedContext;
 
+    // Configures the style parameters string based on:
+    // - which properties were updated
+    // - whether the style parameters were paint or layout properties
+    // - if the input type is a number, string, or array
     const addStyleParameters = (codeSnippet) => {
         if(styleParamsByInput.find(element => element.state !== '')) {
             const propertyTypes = ['paint', 'layout'];
+            
+            // Cycle through 'paint' and 'layout' to create snippet for each, if styling is done to paint and/or layout properties
             propertyTypes.forEach(propertyType => {
-                console.log(styleParamsByInput);
                 const containsProperty = styleParamsByInput.find(element => (element.propertyType === propertyType && element.state !== ''));
                 if (containsProperty) {
                     codeSnippet += `'${propertyType}': {`;
                 styleParamsByInput.map(element => {
                     if (element.propertyType === propertyType && element.state !== '') {
+                        
+                        // Configure code snippet depending on if its a number, 'string', or [array]
                         codeSnippet += `
                 '${element.param}': ${element.inputType === 'number' ? element.state : (element.inputType === 'array' ? `[${element.state}]` : `'${element.state}'`)},`;
                     }
@@ -53,6 +60,7 @@ export default function Snippet() {
         return codeSnippet;
     }
 
+    // Configures the addSource and addLayer snippet
     const addSourceAndLayerSnippet = () => {
         let codeSnippet = '';
         if (dataNotAdded === false) {
@@ -81,6 +89,7 @@ export default function Snippet() {
         return codeSnippet;
     }
 
+    // Configures the overall snippet string
     const generateCodeSnippet = `<!DOCTYPE html>
 <html>
 <head>

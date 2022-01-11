@@ -3,11 +3,14 @@ import React, { useState } from 'react';
 export const Context = React.createContext();
 
 export const Provider = ({ children }) => {
-
+    // State relating to map positioning and style
     const [lng, setLng] = useState(-122.3978);
     const [lat, setLat] = useState(37.7533);
     const [zoom, setZoom] = useState(9);
     const [style, setStyle] = useState('mapbox/streets-v11');
+    const [toggleValue, setToggleValue] = useState(false);
+
+    // State relating to adding data to map
     const [styleParamsByInput, setStyleParamsByInput] = useState([]);
     const [dataFormat, setDataFormat] = useState('geojson');
     const [geojson, setGeojson] = useState('');
@@ -16,7 +19,7 @@ export const Provider = ({ children }) => {
     const [dataType, setDataType] = useState('circle');
     const [dataNotAdded, setDataNotAdded] = useState(true);
 
-
+    // State related to data styling
     const [circleColor, setCircleColor] = useState('');
     const [circleOpacity, setCircleOpacity] = useState('');
     const [circleRadius, setCircleRadius] = useState('');
@@ -36,11 +39,13 @@ export const Provider = ({ children }) => {
     const [fillOpacity, setFillOpacity] = useState('');
     const [fillOutlineColor, setFillOutlineColor] = useState('');
 
+    // Packaging up these state values into an object so that they can be used more readily in the application
     const properties = {
         lngContext: {lng, setLng},
         latContext: {lat, setLat},
         zoomContext: {zoom, setZoom},
         styleContext: {style, setStyle},
+        tileToggleContext: {toggleValue, setToggleValue},
         styleParamsByInputContext: {styleParamsByInput, setStyleParamsByInput},
         dataFormatContext: {dataFormat, setDataFormat},
         geojsonContext: {geojson, setGeojson},

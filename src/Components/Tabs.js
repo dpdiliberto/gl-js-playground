@@ -1,9 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import UnderlineTabs from '@mapbox/mr-ui/underline-tabs';
-import Parameters from './Parameters.js';
+import MapParameters from './MapParameters.js';
 import AddData from './AddData.js';
 import Snippet from './Snippet';
-import Context from '../Context.js';
 
 const tabs = [
     {
@@ -22,41 +21,25 @@ const tabs = [
 
 export default function Tabs(props) {
 
-    const stylingContext = useContext(Context.Context);
-
     const [activeTab, setActiveTab] = useState('map-parameters');
 
+    // Updates activeTab state 
     const changeTab = (id) => {
         setActiveTab(id);
     }
 
+    // Updates which tab component is displayed based on activeTab state
     const navigateTabs = () => {
         if (activeTab === 'map-parameters') {
             return (
-                <Parameters
-                    lat={props.lat}
-                    lng={props.lng}
-                    zoom={props.zoom}
-                    style={props.style}
-                    slippyTile={props.slippyTile}
+                <MapParameters
                     map={props.map}
-                    handleChange={props.handleChange}
-                    handleToggle={props.handleToggle}
-                    handleClickSlippyTiles={props.handleClickSlippyTiles}
-                    handleClickMapStyle={props.handleClickMapStyle}
-                    toggleValue={props.toggleValue}
                 />
             )
         } else if (activeTab === 'add-data') {
             return (
                 <AddData
-                    slippyTile={props.slippyTile}
                     map={props.map}
-                    handleChange={props.handleChange}
-                    handleToggle={props.handleToggle}
-                    handleClickSlippyTiles={props.handleClickSlippyTiles}
-                    handleClickMapStyle={props.handleClickMapStyle}
-                    toggleValue={props.toggleValue}
                 />
             )
         } else if (activeTab === 'gl-js-snippet') {

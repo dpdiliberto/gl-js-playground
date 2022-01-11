@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import ControlText from '@mapbox/mr-ui/control-text';
 import Context from '../Context';
 
@@ -51,6 +51,11 @@ export default function StyleData(props) {
     const {fillOpacity, setFillOpacity} = fillOpacityContext;
     const {fillOutlineColor, setFillOutlineColor} = fillOutlineColorContext;
 
+    // Generates the object that holds an array for each data type
+    // Each array for each data type contains:
+    // - the state for that value, as well as the coresponding setState function to be able to update state
+    // - the property type and input type
+    // - placeholder and default values
     const styleParams = {
         "circle": 
             [
@@ -217,6 +222,8 @@ export default function StyleData(props) {
             ]
     }
 
+    // Pulls from data type selected in AddData component to determine corresponding styling properties
+    // ie if "Circle" is selected, then can style "Circle color", "Circle opacity", and "Circle radius"
     const handleStyleParams = () => {
         const styleArray = styleParams[props.dataType];
         return (
@@ -240,13 +247,15 @@ export default function StyleData(props) {
         )
     }
 
-    const handleClick = () => {
+    // Styles data on map according to styling inputs
+    // Also handles if an input is left blank, if is paint property, and is layout property
+    const handleClickStyleData = () => {
         const styleArray = styleParams[props.dataType];
         setStyleParamsByInput(styleArray);
         styleArray.map( element => {
             let propertyValue;
+            // if state is untouched, or has been deleted, set value to default value
             (element.state !== '' && element.state !== 'undefined') ? propertyValue = element.state : propertyValue = element.default;
-            console.log(propertyValue);
                 if (element.propertyType === 'paint') {
                     return props.map.current.setPaintProperty('added-layer', element.param, (
                         (element.inputType === "number") ? Number(propertyValue) : 
@@ -262,8 +271,7 @@ export default function StyleData(props) {
                             propertyValue)
                         )); ;
                 }
-        })
-        console.log(styleParams);
+        });
     } 
 
    return (
@@ -273,8 +281,11 @@ export default function StyleData(props) {
                 {handleStyleParams()}
             </div>
             <div className='align-center'>
-                <button disabled={dataNotAdded ? 'true' : ''} className='btn btn--s mb24' onClick={() => handleClick()}>
-                    Style Data
+                <button 
+                    disabled={dataNotAdded ? 'true' : ''} 
+                    className='btn btn--s mb24' 
+                    onClick={() => handleClickStyleData()}>
+                        Style Data
                 </button>
             </div>
         </div>

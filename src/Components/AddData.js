@@ -27,7 +27,8 @@ export default function AddData(props) {
     const {dataNotAdded, setDataNotAdded} = dataNotAddedContext;
     const {styleParamsByInput} = styleParamsByInputContext;
 
-    const addData = () => {
+    // Adds geojson data or tileset source and layer to map
+    const handleClickAddData = () => {
         if (dataFormat === 'geojson') {
             const parsedGeojson = JSON.parse(geojson);
             props.map.current.addSource('added-source', {
@@ -54,12 +55,14 @@ export default function AddData(props) {
         setDataNotAdded(false);
     }
 
-    const removeData = () => {
+    // Removes data on map 
+    const handleClickRemoveData = () => {
         setDataNotAdded(true);
         props.map.current.removeLayer('added-layer');
         props.map.current.removeSource('added-source');
     }
 
+    // Handles the data type element so that StyleData component pulls corresponding style properties
     const handleDataTypeChange = (value) => {
         setDataType(value);
         for (const index in styleParamsByInput) {
@@ -67,6 +70,7 @@ export default function AddData(props) {
         }
     }
 
+    // Configures data type element, which will be inserted into handledDataFormat function
     const handleDataType = () =>{
         return (
             <ControlSelect
@@ -98,6 +102,7 @@ export default function AddData(props) {
         )
     }
 
+    // Handles data format - whether data is geojson or tileset
     const handleDataFormatChange = (value, id) => {
         if (id  === 'geojson') {
             setGeojson(value);
@@ -109,6 +114,9 @@ export default function AddData(props) {
         }
     }
     
+    // Handles data format so that corresponding inputs are provided
+    // if data is geojson - paste geojson
+    // if data is tileset - provide tileset id and layer
     const handleDataFormat = () => {
         if (dataFormat === 'geojson') {
             return (
@@ -181,7 +189,7 @@ export default function AddData(props) {
                 </div>
                 {handleDataFormat()}
                 <div className='align-center'>
-                    <button className='btn btn--s' onClick={(dataNotAdded) ? addData : removeData}>
+                    <button className='btn btn--s' onClick={(dataNotAdded) ? handleClickAddData : handleClickRemoveData}>
                         {(dataNotAdded) ? "Add data to map" : "Remove data from map"}
                     </button>
                 </div>

@@ -1,19 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import ControlText from '@mapbox/mr-ui/control-text';
 import ControlSwitch from '@mapbox/mr-ui/control-switch';
 import SphericalMercator from '@mapbox/sphericalmercator';
+import Context from '../Context';
 import * as turf from '@turf/turf';
 
 
 export default function Parameters(props) {
 
-    const [toggleValue, setToggleValue] = useState(false);
+    const {lngContext, latContext, zoomContext, styleContext, tileToggleContext} = useContext(Context.Context);
+    const {lng, setLng} = lngContext;
+    const {lat, setLat} = latContext;
+    const {zoom, setZoom} = zoomContext;
+    const {style, setStyle} = styleContext;
+    const {toggleValue, setToggleValue} = tileToggleContext;
+    const [slippyTile, setSlippyTile] = useState('');
 
-    var sm = new SphericalMercator({
-        size: 512
-    });
+    // Update state and map if map parameters are updated
+    const handleChangeMapParameters = (value, id) => {
+        const valueFloat = parseFloat(value);
+        if (id === 'longitude') {
+            setLng(valueFloat);
+            if (value) {
+                props.map.current.setCenter([valueFloat,lat]);
+            }
+        }
+        if (id === 'latitude') {
+            setLat(valueFloat);
+            if (value) {
+                props.map.current.setCenter([lng,valueFloat]);
+            }
+        }
+        if (id === 'zoom') {
+            setZoom(valueFloat);
+            if (value) {
+                props.map.current.setZoom(valueFloat);
+            }
+        } 
+        if (id === 'slippy-tile') {
+            setSlippyTile(value);
+        }
+        if (id === 'map-style') {
+            setStyle(value);
+        }
+    }
 
-    const handleToggle = () => {
+    // Updates map style on click
+    const handleClickMapStyle = () => {
+      props.map.current.setStyle(`mapbox://styles/${style}`)
+    }
+
+    // Toggles on tile boundaries
+    const handleToggleTileBoundaries = () => {
         setToggleValue(!toggleValue);
         if (!toggleValue) {
             props.map.current.showTileBoundaries = true;
@@ -22,8 +60,14 @@ export default function Parameters(props) {
         }
     }
 
+    // Instaniates spherical mercator object to use in handleClickSlippyTiles function
+    var sm = new SphericalMercator({
+        size: 512
+    });
+
+    // Calculates map coordinates based on tile coordinate inputs, and zooms map to that point 
     const handleClickSlippyTiles = () => {
-        let tileCoordinates = props.slippyTile.split('/');
+        let tileCoordinates = slippyTile.split('/');
 
         var coords = sm.bbox(tileCoordinates[1],tileCoordinates[2],tileCoordinates[0]);
 
@@ -37,7 +81,8 @@ export default function Parameters(props) {
         });
     }
       
-    const toggleComponents = (toggleValue) => {
+    // Toggles on slippy tile component if toggleValue is true
+    const toggleSlippyTileComponent = (toggleValue) => {
         if (toggleValue) {
             return (
                 <div className="sidebar align-l"> 
@@ -48,8 +93,8 @@ export default function Parameters(props) {
                                 label="Input slippy tile numbers"
                                 type="string"
                                 placeholder="z/x/y tile"
-                                value={props.slippyTile}
-                                onChange={props.handleChange}
+                                value={slippyTile}
+                                onChange={handleChangeMapParameters}
                             />
                         </div>
                         <div className="py30">
@@ -70,24 +115,24 @@ export default function Parameters(props) {
                             id="longitude"
                             label="Longitude"
                             type="number"
-                            value={props.lng}
-                            onChange={props.handleChange}
+                            value={lng}
+                            onChange={handleChangeMapParameters}
                             aside="-180 to 180"
                         />
                         <ControlText className='input--border-black w240 txt-ms'
                             id="latitude"
                             label="Latitude"
                             type="number"
-                            value={props.lat}
-                            onChange={props.handleChange}
+                            value={lat}
+                            onChange={handleChangeMapParameters}
                             aside="-90 to 90"
                         />
                         <ControlText className='input--border-black w240 txt-ms'
                             id="zoom"
                             label="Zoom"
                             type="number"
-                            value={props.zoom}
-                            onChange={props.handleChange}
+                            value={zoom}
+                            onChange={handleChangeMapParameters}
                             aside={<span>0 to 22</span>}
                         />
                     </div>
@@ -101,13 +146,13 @@ export default function Parameters(props) {
                                 id="map-style"
                                 label="Input style ID"
                                 type="string"
-                                value={props.style}
-                                onChange={props.handleChange}
+                                value={style}
+                                onChange={handleChangeMapParameters}
                                 placeholder='username/styleID'
                             />
                         </div>
                         <div className="py30">
-                            <button className='btn btn--s' onClick={props.handleClickMapStyle}>
+                            <button className='btn btn--s' onClick={handleClickMapStyle}>
                                 Update
                             </button>
                         </div>
@@ -120,11 +165,11 @@ export default function Parameters(props) {
                             id="slippy-switch"
                             label="Slippy tile finder"
                             themeControlSwitch='switch'
-                            onChange={handleToggle}
+                            onChange={handleToggleTileBoundaries}
                             value={toggleValue}
                         />
                 </div>
-                {toggleComponents(toggleValue)}
+                {toggleSlippyTileComponent(toggleValue)}
             </div>
         </div>
     );
