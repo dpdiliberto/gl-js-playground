@@ -8,13 +8,14 @@ import * as turf from '@turf/turf';
 
 export default function Parameters(props) {
 
-    const {lngContext, latContext, zoomContext, styleContext, accessTokenContext, tileToggleContext} = useContext(Context.Context);
+    const {lngContext, latContext, zoomContext, styleContext, accessTokenContext, tileToggleContext, dataNotAddedContext} = useContext(Context.Context);
     const {lng, setLng} = lngContext;
     const {lat, setLat} = latContext;
     const {zoom, setZoom} = zoomContext;
     const {style, setStyle} = styleContext;
     const {accessToken, setAccessToken} = accessTokenContext;
     const {toggleValue, setToggleValue} = tileToggleContext;
+    const {dataNotAdded, setDataNotAdded} = dataNotAddedContext;
     const [slippyTile, setSlippyTile] = useState('');
 
     // Update state and map if map parameters are updated
@@ -51,7 +52,12 @@ export default function Parameters(props) {
 
     // Updates map style on click
     const handleClickMapStyle = () => {
-      props.map.current.setStyle(`mapbox://styles/${style}`)
+      props.map.current.setStyle(`mapbox://styles/${style}`);
+      if (!dataNotAdded) {
+        setDataNotAdded(true);
+        props.map.current.removeLayer('added-layer');
+        props.map.current.removeSource('added-source');
+      }
     }
 
     // Toggles on tile boundaries
