@@ -6,6 +6,7 @@ import Context from '../Context';
 export default function Snippet() {
 
     const {
+        accessTokenContext,
         dataFormatContext, 
         dataTypeContext, 
         geojsonContext, 
@@ -18,6 +19,7 @@ export default function Snippet() {
         zoomContext,
         dataNotAddedContext} = useContext(Context.Context);
 
+    const {accessToken} = accessTokenContext;
     const {dataFormat} = dataFormatContext;
     const {dataType} = dataTypeContext;
     const {geojson} = geojsonContext;
@@ -106,7 +108,7 @@ body { margin: 0; padding: 0; }
 <body>
 <div id="map"></div>
 <script>
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZHBkaWxpYmVydG8iLCJhIjoiY2tub3VicDJxMWFrcjJ1bGJjdGtodjl5MCJ9.ew1He_m1p0dcn6UPhEDJ1Q';
+    mapboxgl.accessToken = '${accessToken}';
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/${style}',
