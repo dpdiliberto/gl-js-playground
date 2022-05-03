@@ -121,7 +121,7 @@ export default function AddData(props) {
         if (dataFormat === 'geojson') {
             return (
                 <div className="txt-bold txt-s pt24 align-center">Add GeoJSON
-                    <div className="sidebar align-l"> 
+                    <div className="txt-normal txt-s sidebar align-l"> 
                         {handleDataType()}
                         <ControlTextarea className='input--border-black w300 txt-ms hmin360'
                             id="geojson"
@@ -129,6 +129,7 @@ export default function AddData(props) {
                             type="string"
                             value={geojson}
                             onChange={handleDataFormatChange}
+                            aside={<span><a style={{color: "blue"}} href="http://geojson.io/" target="_blank">See geojson.io</a></span>}
                         />
                     </div>
                 </div>
@@ -145,7 +146,7 @@ export default function AddData(props) {
                             value={tilesetId}
                             onChange={handleDataFormatChange}
                             placeholder='username.tilesetID'
-                            aside={<span><a style={{color: "blue"}}href="https://docs.mapbox.com/studio-manual/reference/tilesets/#tileset-id">See docs</a></span>}
+                            aside={<span><a style={{color: "blue"}} href="https://docs.mapbox.com/studio-manual/reference/tilesets/#tileset-id" target="_blank">See docs</a></span>}
                         />
                         <ControlText className='input--border-black w300 txt-ms'
                             id="tilesetLayer"
